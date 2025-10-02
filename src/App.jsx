@@ -7,7 +7,11 @@ function App() {
   return (
     <>
       <Auth/>
-      <ToastContainer/>
+      <ToastContainer
+        autoClose={3000}
+        pauseOnFocusLoss={false}
+        pauseOnHover={false}
+      />
     </>
   )
 }

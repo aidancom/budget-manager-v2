@@ -7,32 +7,39 @@ import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { useForm } from 'react-hook-form';
 import { Button } from 'primereact/button';
+import { CircularProgress } from '@mui/material';
 
 const Auth = () => {
 
   const auth = useAppStore(state => state.auth)
   const authUser = useAppStore(state => state.authUser)
+  const loading = useAppStore(state => state.loading)
 
-  const {handleSubmit, reset, register, formState: { errors }} = useForm()
-
-
+  const {handleSubmit, register, formState: { errors }} = useForm()
 
   return (
     <div className='w-full h-screen'>
       <Header/>
       <div className='flex justify-center items-center h-full w-full absolute top-0'>
         <form 
-          className='shadow-xl/30 rounded p-5'
-          onSubmit={handleSubmit((data) => authUser(data))}
+          className='shadow-xl/30 rounded p-5 relative'
+          onSubmit={handleSubmit(async (data) =>  await authUser(data))}
         >
+          {loading && (
+            <div className='absolute w-full h-full flex items-center justify-center top-0 left-0 bg-[#ffffffbf] z-999'>
+              <CircularProgress />
+            </div>         
+          )}
+ 
           <h1 className='text-center font-bold pb-3 text-2xl'>{auth == 'register' ? "Registrarse" : "Entrar"}</h1>
           <div
             className='space-y-3'
           >
             {auth == 'register' && (
               <fieldset>
-                <InputText
+                <input
                   placeholder='Ingresa tu nombre'
+                  name='name'
                   className='border border-gray-500 px-2 py-1 rounded-md w-full'
                   {...register("name", {
                     required: "El nombre es obligatorio"
@@ -42,8 +49,9 @@ const Auth = () => {
               </fieldset>
             )}
             <fieldset>
-                <InputText
+                <input
                   placeholder='Ingresa tu usuario'
+                  name='user'
                   className='border border-gray-500 px-2 py-1 rounded-md w-full'
                   {...register("user", {
                     required: "El usuario es obligatorio"
@@ -53,8 +61,9 @@ const Auth = () => {
             </fieldset>
 
             <fieldset>
-                <InputText
+                <input
                   type="password"
+                  name="password"
                   placeholder="Ingresa tu contraseña"
                   className="border border-gray-500 px-2 py-1 rounded-md w-full"
                   {...register("password", { 
