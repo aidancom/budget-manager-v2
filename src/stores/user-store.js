@@ -2,8 +2,8 @@ import { toast } from "react-toastify"
 
 export const userStore = (set, get) => ({
   'auth': 'login',
-  'user': null,
-  'logged': false,
+  'user': localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {},
+  'logged': localStorage.getItem('logged') ? localStorage.getItem('logged') : false,
   'loading': false,
   authUser: async (data) => {
     set({
