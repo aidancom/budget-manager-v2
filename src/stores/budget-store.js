@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { format } from '../helpers/format';
 
 export const userBudget = (set, get) => ({
@@ -44,6 +45,7 @@ export const userBudget = (set, get) => ({
         set({
           budget: json.response
         })
+        toast.success(json.message)
       }
     } catch(e) {
       console.log(e)
