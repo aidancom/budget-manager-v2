@@ -3,7 +3,7 @@ import uuid, bcrypt
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-from connection import column_users
+from connection import column_users, column_budget
 
 app = Flask(__name__)
 CORS(app)
@@ -49,5 +49,38 @@ def login_user():
   else:
     return jsonify({'status': 'error', 'code': 401, 'message': 'Usuario o contraseña incorrectos', 'response': {}})
 
+
+@app.route('/getBudget', methods=['POST'])
+def get_budget():
+  data = request.get_json()
+  budget_exist = column_budget.find_one({'user_id': data['user_id']}, {'_id': 0})
+
+  if budget_exist:
+    return jsonify({'status': 'success', 'code': 401, 'message': 'Presupuesto encontrado', 'response': budget_exist})
+  else:
+    return jsonify({'status': 'error', 'code': 401, 'message': 'No existe', 'response': None})
+
+@app.route('/sendBudget', methods=['POST'])
+def send_budget():
+  data = request.get_json()
+  budget_exist = column_budget.find_one({'user_id': data['user_id']}, {'_id': 0})
+
+  if budget_exist:
+    return jsonify({'status': 'error', 'code': 401, 'message': 'Este usuario ya tiene un presupuesto', 'response': list(budget_exist)})
+  else:
+    budget = {
+      'user_id': data['user_id'],
+      'budget_id': str(uuid.uuid4()),
+      'budget': data['budget'],
+      'available': data['available'],
+      'spend': data['spend']
+    }
+    insert_budget = column_budget.insert_one(budget)
+
+    if insert_budget.inserted_id:
+      return jsonify({'status': 'success', 'code': 401, 'message': 'Registro del presupuesto realizado con éxito', 'response': list(budget)})
+    else:
+      return jsonify({'status': 'error', 'code': 401, 'message': 'Erro al insertar el presupuesto', 'response': {}})
+    
 if __name__ == "__main__":
   app.run(port=5000, debug=True)

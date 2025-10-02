@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from 'primereact/button';
 import { CircularProgress } from '@mui/material';
 
+
 const Auth = () => {
 
   const auth = useAppStore(state => state.auth)
@@ -16,7 +17,7 @@ const Auth = () => {
   const loading = useAppStore(state => state.loading)
 
   const {handleSubmit, register, formState: { errors }} = useForm()
-
+  
   return (
     <div className='w-full h-screen'>
       <Header/>

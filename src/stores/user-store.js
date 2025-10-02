@@ -28,7 +28,7 @@ export const userStore = (set, get) => ({
            toast.error(json.message)
         }
       } catch (e) {
-        toast.error("Error al registrar el usuario")
+        toast.error(`Error: ${e}`)
       } finally {
         set({
           loading: false
@@ -46,6 +46,8 @@ export const userStore = (set, get) => ({
         })
         const json = await res.json()
         if (json.status == 'success') {
+          await get().getBudget(json.response.user_id)
+          console.log(get().budget)
           toast.success(json.message)
           set({
             user: json.response,
