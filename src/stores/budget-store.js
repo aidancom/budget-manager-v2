@@ -28,9 +28,9 @@ export const userBudget = (set, get) => ({
     })
     const data_budget = {
       'user_id': get().user?.user_id,
-      'budget': format(data?.budget),
-      'available': format(data?.budget),
-      'spend': format(0)
+      'budget': parseInt(data?.budget),
+      'available': parseInt(data?.budget),
+      'spend': 0
     }
     try {
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sendBudget`, {
@@ -43,7 +43,7 @@ export const userBudget = (set, get) => ({
       const json = await res.json()
       if (json.status == 'success') {
         set({
-          budget: json.response
+          budget: data_budget
         })
         toast.success(json.message)
       }

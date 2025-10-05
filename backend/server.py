@@ -3,7 +3,7 @@ import uuid, bcrypt
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-from connection import column_users, column_budget
+from connection import column_users, column_budget, column_categories
 
 app = Flask(__name__)
 CORS(app)
@@ -78,9 +78,18 @@ def send_budget():
     insert_budget = column_budget.insert_one(budget)
 
     if insert_budget.inserted_id:
-      return jsonify({'status': 'success', 'code': 401, 'message': 'Registro del presupuesto realizado con éxito', 'response': list(budget)})
+      return jsonify({'status': 'success', 'code': 200, 'message': 'Registro del presupuesto realizado con éxito', 'response': list(budget)})
     else:
       return jsonify({'status': 'error', 'code': 401, 'message': 'Erro al insertar el presupuesto', 'response': {}})
     
+@app.route('/getCategories')
+def get_categories():
+  categories = list(column_categories.find({}, {'_id': 0}))
+  
+  if categories:
+    return jsonify({'status': 'success', 'code': 200, 'message': 'Categorias', 'response': categories})
+  else:
+    return jsonify({'status': 'success', 'code': 404, 'message': 'No se ha podido devolver las categorias', 'response': None})
+
 if __name__ == "__main__":
   app.run(port=5000, debug=True)

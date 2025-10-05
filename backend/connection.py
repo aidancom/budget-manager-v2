@@ -6,3 +6,4 @@ database = con['budget_manager']
 
 column_users = database["user"]
 column_budget = database["budget"]
+column_categories = database["categories"]
