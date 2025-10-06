@@ -7,19 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../components/Modal';
 import { AnimatePresence } from 'framer-motion';
-import { useEffect } from 'react';
-import { useApi } from '../hooks/useApi';
+import Expenses from '../components/Expenses';
 
 const Budget = () => {
 
   const budget = useAppStore(state => state.budget)
   const modal = useAppStore(state => state.modal);
   const total = (budget.available / budget.budget) * 100
-  const {data} = useApi('/getUserExpenses', 'POST', {'budget_id': budget.budget_id})
-
-  useEffect(() => {
-    console.log(data)
-  }, [data])
 
   return (
     <div className='relative h-screen'>
@@ -44,6 +38,9 @@ const Budget = () => {
         </div>
         <div className='max-w-[600px] w-full'>
           <CategoryFilter />
+        </div>
+        <div className='max-w-[600px] w-full'>
+          <Expenses/>
         </div>
       </div>
       <div 

@@ -5,23 +5,23 @@ const CategoryFilter = () => {
 
 const categories = useAppStore(state => state.categories)
 const getCategories = useAppStore.getState().getCategories
+const changeCategory = useAppStore(state => state.changeCategory)
 
   useEffect(() => {
     getCategories()
   }, [])
 
-  useEffect(() => {
-    console.log(categories)
-  }, [categories])  
-
   return (
     <div className='max-w-[600px] w-full'>
-      <select className='w-full p-2 bg-blue-500 rounded text-white'>
+      <select 
+        className='w-full p-2 bg-blue-500 rounded text-white'
+        onChange={(e) => changeCategory(e.target.value)}
+        >
         <option
           disabled={true}
           selected={true}
           value=""
-        >--- Selecciona una categoria ---</option>
+        >--- Selecciona una categoria para filtrar gastos ---</option>
         {categories.length && (
           categories.map(category => (
             <option value={category.category_id}>{category.category_name}</option>

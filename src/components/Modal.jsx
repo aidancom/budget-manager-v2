@@ -4,11 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
 import { Button } from "primereact/button"
 import { motion } from "framer-motion"
+import { CircularProgress } from "@mui/material"
 
 const Modal = ({modal}) => {
 
   const categories = useAppStore(state => state.categories)
   const sendExepnse = useAppStore(state => state.sendExepnse)
+  const loading = useAppStore(state => state.loading)
   
   const {handleSubmit, register, formState: {errors}} = useForm()
 
@@ -29,10 +31,16 @@ const Modal = ({modal}) => {
             onClick={() => useAppStore.setState({'modal': false})}
           />
         </div>
+      
         <form 
-          className="bg-white rounded-tl-sm rounded-b-sm p-3 space-y-4"
+          className="bg-white rounded-tl-sm rounded-b-sm p-3 space-y-4 relative"
           onSubmit={handleSubmit((data) => sendExepnse(data))}
           >
+          {loading && (
+            <div className='absolute w-full h-full flex items-center justify-center top-0 left-0 bg-[#ffffffbf] z-999'>
+              <CircularProgress />
+            </div>         
+          )}                 
           <fieldset className="flex flex-col space-y-1">
             <label>Nombre del gasto</label>
             <input

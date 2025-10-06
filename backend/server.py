@@ -142,5 +142,15 @@ def get_user_expenses():
     return jsonify({'status': 'error', 'code': 404, 'message': 'No hay gastos', 'response': []})
 
 
+@app.route('/getExpensesByCategory', methods=['POST'])
+def get_expenses_by_category():
+  data = request.get_json()
+  exist_budget_expenses = column_expenses.find_one({"budget_id": data["budget_id"]})
+  if exist_budget_expenses:
+    expenses = [expense for expense in exist_budget_expenses["expenses"] if expense["expense_category_id"] == str(data["category_id"])]
+    return jsonify({'status': 'success', 'code': 404, 'message': 'No hay gastos', 'response': expenses})    
+  else:
+    return jsonify({'status': 'error', 'code': 404, 'message': 'No hay gastos', 'response': []})
+
 if __name__ == "__main__":
   app.run(port=5000, debug=True)
