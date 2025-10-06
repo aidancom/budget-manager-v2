@@ -3,8 +3,6 @@ import useAppStore from '../stores/useAppStore'
 import Error from '../components/Error';
 import Header from '../components/Header'
 
-import { InputText } from 'primereact/inputtext';
-import { Password } from 'primereact/password';
 import { useForm } from 'react-hook-form';
 import { Button } from 'primereact/button';
 import { CircularProgress } from '@mui/material';

@@ -14,7 +14,7 @@ const BudgetManager = () => {
   const {handleSubmit, register, formState: {errors}} = useForm()
 
   return (
-    <div>
+    <div className='relative'>
       <div className='bg-blue-500 flex justify-center'>
         <div className='bg-white max-w-[500px] w-full mt-10 top-15 relative p-4 shadow-xl/30 rounded'>
           {loading && (
@@ -46,11 +46,11 @@ const BudgetManager = () => {
                   className='bg-blue-500 transition text-white px-4 py-1 rounded-lg font-bold hover:bg-blue-600'
                 /> 
               </div>
-
             </form>
           </div>
         </div>
       </div>
+    
     </div>
   )
 }

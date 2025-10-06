@@ -3,14 +3,26 @@ import { CircularProgressbar } from 'react-circular-progressbar'
 import useAppStore from '../stores/useAppStore'
 import { format } from '../helpers/format';
 import CategoryFilter from '../components/CategoryFilter';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import Modal from '../components/Modal';
+import { AnimatePresence } from 'framer-motion';
+import { useEffect } from 'react';
+import { useApi } from '../hooks/useApi';
 
 const Budget = () => {
 
   const budget = useAppStore(state => state.budget)
+  const modal = useAppStore(state => state.modal);
   const total = (budget.available / budget.budget) * 100
+  const {data} = useApi('/getUserExpenses', 'POST', {'budget_id': budget.budget_id})
+
+  useEffect(() => {
+    console.log(data)
+  }, [data])
 
   return (
-    <div>
+    <div className='relative h-screen'>
       <div className='bg-blue-500'>
         <h1 className='text-center text-4xl font-bold text-white py-5'>Planificador de gastos</h1>
       </div>
@@ -30,9 +42,23 @@ const Budget = () => {
             <p><span className='font-bold'>Disponible: </span>{format(budget.available)}</p>
           </div>
         </div>
-        <CategoryFilter />
+        <div className='max-w-[600px] w-full'>
+          <CategoryFilter />
+        </div>
       </div>
-
+      <div 
+        className='bg-blue-500 absolute bottom-0 right-0 px-3 py-3 rounded-[100%] m-5 cursor-pointer text-white text-2xl'
+        onClick={() => useAppStore.setState({'modal': true})}
+        >
+        <FontAwesomeIcon icon={faPlus}/>
+      </div>
+      <AnimatePresence>
+        {modal && (
+            <Modal
+              modal={modal}
+            />
+        )}  
+      </AnimatePresence>
     </div>
   )
 }
