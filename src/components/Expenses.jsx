@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { useApi } from '../hooks/useApi'
+import { useEffect } from 'react'
 import useAppStore from '../stores/useAppStore'
 import { format } from '../helpers/format'
 import { formatDate } from '../helpers/formatDate'
@@ -9,7 +8,7 @@ const Expenses = () => {
 
   const expenses = useAppStore(state => state.expenses)
   const categories = useAppStore(state => state.categories)
-  const loading = useAppStore(state => state.loading)
+  const loading_category = useAppStore(state => state.loading_category)
   const getExpenses = useAppStore.getState().getExpenses
 
   useEffect(() => {
@@ -20,8 +19,8 @@ const Expenses = () => {
     <div className='p-5 shadow-xl/30 rounded'>
         
       <h2 className='text-center text-2xl font-bold pb-10'>Listado de gastos</h2>
-      <div className={`space-y-4 max-h-[200px] overflow-auto relative ${loading && 'h-[90px]'}`}>
-      {loading ? (
+      <div className={`space-y-4 max-h-[200px] overflow-auto relative ${loading_category && 'h-[90px]'}`}>
+      {loading_category ? (
         <div className='absolute w-full h-full flex items-center justify-center top-0 left-0 bg-[#ffffffbf] z-999'>
           <CircularProgress />
         </div>         

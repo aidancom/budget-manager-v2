@@ -1,5 +1,5 @@
 import 'react-circular-progressbar/dist/styles.css';
-import { CircularProgressbar } from 'react-circular-progressbar'
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar'
 import useAppStore from '../stores/useAppStore'
 import { format } from '../helpers/format';
 import CategoryFilter from '../components/CategoryFilter';
@@ -13,7 +13,9 @@ const Budget = () => {
 
   const budget = useAppStore(state => state.budget)
   const modal = useAppStore(state => state.modal);
-  const total = (budget.available / budget.budget) * 100
+  const total = budget.budget 
+    ? Math.min(Math.round((budget.spend / budget.budget) * 100), 100) 
+    : 0;
 
   return (
     <div className='relative h-screen'>
@@ -25,13 +27,19 @@ const Budget = () => {
           <div>
             <CircularProgressbar
               className='pr-10'
-              value={20}
-              maxValue={1} 
+              value={total}
+              maxValue={100} 
               text={`${total}%`}
+              styles={buildStyles({
+                pathColor: '#155DFC',
+                trailColor: '#f5f5f5',
+                textSize: 15,
+                textColor: '#4A5565'
+              })}               
             />
           </div>
           <div className='space-y-2'>
-            <p><span className='font-bold'>Presupuesto inicial:</span> {format(budget.budget)}</p>
+            <p><span className='font-bold'>Presupuesto:</span> {format(budget.budget)}</p>
             <p><span className='font-bold'>Gastado: </span>{format(budget.spend)}</p>
             <p><span className='font-bold'>Disponible: </span>{format(budget.available)}</p>
           </div>

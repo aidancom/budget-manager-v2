@@ -27,6 +27,7 @@ export const expenseStore = (set, get) => ({
             modal: false
           })
           get().getExpenses()
+          get().getBudget(get().user.user_id)
         } else {
           toast.error(res.message)
         }

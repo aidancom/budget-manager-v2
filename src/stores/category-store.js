@@ -1,5 +1,6 @@
 export const categoryStore = (set, get) => ({
   categories: [],
+  loading_category: false,
   getCategories: async () => {
     try {
       const req = await fetch(`${import.meta.env.VITE_BACKEND_URL}/getCategories`)
@@ -15,7 +16,7 @@ export const categoryStore = (set, get) => ({
   },
   changeCategory: async (data) => {
     set({
-      loading: true
+      loading_category: true
     })
     try {
       const req = await fetch(`${import.meta.env.VITE_BACKEND_URL}/getExpensesByCategory`, {
@@ -33,7 +34,7 @@ export const categoryStore = (set, get) => ({
       console.log(e)
     } finally {
       set({
-        loading: false
+        loading_category: false
       })
     }
   }

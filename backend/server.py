@@ -8,6 +8,22 @@ from connection import column_users, column_budget, column_categories, column_ex
 app = Flask(__name__)
 CORS(app)
 
+def update_budget(data):
+  budget = column_budget.find_one({'budget_id': data['budget_id']})
+
+  expense_quantity = int(data['expense_quantity'])
+  decrement = min(expense_quantity, budget['available'])
+
+  column_budget.update_one(
+      {'budget_id': data['budget_id']},
+      {
+          '$inc': {
+              'spend': int(data['expense_quantity']),
+              'available': -decrement
+          }
+      }
+  )
+  
 
 @app.route('/registerUser', methods=['POST'])
 def register_user():
@@ -100,6 +116,7 @@ def get_categories():
 @app.route('/sendExpense', methods=['POST'])
 def send_expense():
   data = request.get_json()
+
   expense = {
     'budget_id': data['budget_id'],
     'expenses': [
@@ -117,6 +134,7 @@ def send_expense():
   if not exist_budget_expenses:
     insert_expenses = column_expenses.insert_one(expense)
     if insert_expenses.inserted_id:
+      update_budget(data)
       return jsonify({'status': 'success', 'code': 200, 'message': 'Se ha registrado el gasto con éxito', 'response': None})
     else:
       return jsonify({'status': 'error', 'code': 404, 'message': 'No ha registrado el gasto con éxito', 'response': None})
@@ -126,6 +144,7 @@ def send_expense():
       {'$push': {'expenses': expense['expenses'][0]}}
     )
     if update_expenses:
+       update_budget(data)
        return jsonify({'status': 'success', 'code': 200, 'message': 'Se ha registrado el gasto con éxito', 'response': None})
     else:
       return jsonify({'status': 'error', 'code': 404, 'message': 'No ha registrado el gasto con éxito', 'response': None})
