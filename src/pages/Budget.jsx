@@ -25,7 +25,7 @@ const Budget = () => {
       <div className='bg-blue-500'>
         <h1 className='text-center text-4xl font-bold text-white py-5'>Planificador de gastos</h1>
       </div>
-      <div className='flex justify-center mt-5 flex-col items-center space-y-10'>
+      <div className='flex justify-center mt-5 flex-col items-center space-y-10 px-4'>
         <div className='flex items-center p-5 shadow-xl/30 rounded max-w-[600px] w-full'>
           <div>
             <CircularProgressbar

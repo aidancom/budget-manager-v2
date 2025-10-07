@@ -174,13 +174,21 @@ def get_expenses_by_category():
 @app.route('/deleteBudgetFromUser', methods=['POST'])
 def delete_budget_from_user():
   data = request.get_json()
-  delete_expenses = column_expenses.delete_one({'budget_id': data['budget_id']})
+  
+  exist_expenses = column_expenses.find_one({'budget_id': data['budget_id']})
   delete_budget = column_budget.delete_one({'user_id': data['user_id']})
 
-  if delete_budget and delete_expenses:
-    return jsonify({'status': 'success', 'code': '200', 'message': 'Presupuesto eliminado con éxito', 'response': None})
+  if exist_expenses:
+    delete_expenses = column_expenses.delete_one({'budget_id': data['budget_id']})
+    if delete_budget and delete_expenses:
+      return jsonify({'status': 'success', 'code': '200', 'message': 'Presupuesto eliminado con éxito', 'response': None})
+    else:
+      return jsonify({'status': 'error', 'code': '404', 'message': 'No se ha podido eliminar el presupuesto', 'response': None})
   else:
-    return jsonify({'status': 'error', 'code': '404', 'message': 'No se ha podido eliminar el presupuesto', 'response': None})
+    if delete_budget:
+            return jsonify({'status': 'success', 'code': '200', 'message': 'Presupuesto eliminado con éxito', 'response': None})
+    else:
+      return jsonify({'status': 'error', 'code': '404', 'message': 'No se ha podido eliminar el presupuesto', 'response': None})
 
 
 if __name__ == "__main__":

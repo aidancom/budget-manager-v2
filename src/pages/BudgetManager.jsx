@@ -15,7 +15,7 @@ const BudgetManager = () => {
 
   return (
     <div className='relative'>
-      <div className='bg-blue-500 flex justify-center'>
+      <div className='bg-blue-500 flex justify-center px-4'>
         <div className='bg-white max-w-[500px] w-full mt-10 top-15 relative p-4 shadow-xl/30 rounded'>
           {loading && (
             <div className='absolute w-full h-full flex items-center justify-center top-0 left-0 bg-[#ffffffbf] z-999'>

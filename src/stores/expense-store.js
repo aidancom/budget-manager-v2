@@ -41,6 +41,7 @@ export const expenseStore = (set, get) => ({
     }
   },
   getExpenses: async () => {
+    console.log({'budget_id': get().budget.budget_id})
     try {
       const req = await fetch(`${import.meta.env.VITE_BACKEND_URL}/getUserExpenses`, {
         method: 'POST',

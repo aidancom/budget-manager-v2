@@ -41,9 +41,9 @@ export const userBudget = (set, get) => ({
       })
       const json = await res.json()
       if (json.status == 'success') {
-        set({
-          budget: data_budget
-        })
+        console.log("Hola")
+        console.log(get().user.user_id)
+        await get().getBudget(get().user.user_id)
         toast.success(json.message)
       }
     } catch(e) {
