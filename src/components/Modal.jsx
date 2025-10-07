@@ -18,7 +18,7 @@ const Modal = ({modal}) => {
     <div className="absolute w-full h-full flex items-center justify-center top-0 bg-[#0000008f] flex-col">
       
       <motion.div 
-        className="w-[300px]"
+        className="max-w-[500px] w-full px-5"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0 }}  
@@ -31,11 +31,13 @@ const Modal = ({modal}) => {
             onClick={() => useAppStore.setState({'modal': false})}
           />
         </div>
-      
+
         <form 
           className="bg-white rounded-tl-sm rounded-b-sm p-3 space-y-4 relative"
           onSubmit={handleSubmit((data) => sendExepnse(data))}
           >
+            <h2 className="text-2xl font-bold text-center">Añadir nuevo <span className="text-blue-500">gasto</span></h2>
+            <div className="w-full bg-blue-500 h-1"></div>            
           {loading && (
             <div className='absolute w-full h-full flex items-center justify-center top-0 left-0 bg-[#ffffffbf] z-999'>
               <CircularProgress />
@@ -47,7 +49,7 @@ const Modal = ({modal}) => {
               type="text"
               name="expense_name"
               placeholder="Introduce el nombre del gasto"
-              className={`border rounded px-2 ${errors?.expense_name && 'border-red-500'}`}
+              className={`bg-gray-200 rounded px-2 py-1 ${errors?.expense_name && 'border-red-500 border'}`}
               {...register("expense_name", {
                 required: "Este campo es obligatorio"
               })}
@@ -59,7 +61,7 @@ const Modal = ({modal}) => {
               {...register("expense_category_id", {
                 required: "Este campo es obligatorio"
               })}
-              className={`border rounded px-2 ${errors?.expense_category_id && 'border-red-500'}`}
+              className={`bg-gray-200 rounded px-2 py-1 ${errors?.expense_category_id && 'border-red-500 border'}`}
             >
               <option value="">--- Selecciona una categoria ---</option>
               {categories.length && (
@@ -75,7 +77,7 @@ const Modal = ({modal}) => {
               type="number"
               name="expense_quantity"
               placeholder="Introduce la cantidad del gasto"
-              className={`border rounded px-2 ${errors?.expense_quantity && 'border-red-500'}`}
+              className={` bg-gray-200 rounded px-2 py-1 ${errors?.expense_quantity && 'border-red-500 border'}`}
               {...register("expense_quantity", {
                 required: "Este campo es obligatorio"
               })}              
@@ -86,7 +88,8 @@ const Modal = ({modal}) => {
             <input
               type="date"
               name="expense_date"
-              className={`border rounded px-2 ${errors?.expense_date && 'border-red-500'}`}
+              defaultValue={new Date().toISOString().split('T')[0]}
+              className={`bg-gray-200 rounded px-2 py-1 ${errors?.expense_date && 'border-red-500 border'}`}
               {...register("expense_date", {
                 required: "Este campo es obligatorio"
               })}                      
@@ -95,7 +98,7 @@ const Modal = ({modal}) => {
             <Button
               label='Enviar'
               type='submit'
-              className='bg-blue-500 transition text-white px-4 py-1 rounded-lg font-bold hover:bg-blue-600'
+              className='bg-blue-500 transition text-white px-4 py-1 rounded-lg font-bold hover:bg-blue-600 w-full'
             />                           
         </form>
       </motion.div>
