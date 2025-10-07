@@ -30,7 +30,7 @@ function App() {
 
   return (
     <>
-      {logged ? (
+      {logged == true ? (
         budget ? (
           <Budget/>
         ) : (
