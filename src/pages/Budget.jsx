@@ -8,11 +8,14 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../components/Modal';
 import { AnimatePresence } from 'framer-motion';
 import Expenses from '../components/Expenses';
+import ButtonReset from '../components/ButtonReset';
+import ConfirmResetModal from '../components/ConfirmResetModal';
 
 const Budget = () => {
 
   const budget = useAppStore(state => state.budget)
   const modal = useAppStore(state => state.modal);
+  const modal_reset = useAppStore(state => state.modal_reset);
   const total = budget.budget 
     ? Math.min(Math.round((budget.spend / budget.budget) * 100), 100) 
     : 0;
@@ -23,7 +26,7 @@ const Budget = () => {
         <h1 className='text-center text-4xl font-bold text-white py-5'>Planificador de gastos</h1>
       </div>
       <div className='flex justify-center mt-5 flex-col items-center space-y-10'>
-        <div className='flex items-center p-5 shadow-xl/30 rounded max-w-[600px]'>
+        <div className='flex items-center p-5 shadow-xl/30 rounded max-w-[600px] w-full'>
           <div>
             <CircularProgressbar
               className='pr-10'
@@ -39,6 +42,9 @@ const Budget = () => {
             />
           </div>
           <div className='space-y-2'>
+            <div>
+              <ButtonReset/>
+            </div>
             <p><span className='font-bold'>Presupuesto:</span> {format(budget.budget)}</p>
             <p><span className='font-bold'>Gastado: </span>{format(budget.spend)}</p>
             <p><span className='font-bold'>Disponible: </span>{format(budget.available)}</p>
@@ -64,6 +70,13 @@ const Budget = () => {
             />
         )}  
       </AnimatePresence>
+      <AnimatePresence>
+        {modal_reset && (
+            <ConfirmResetModal
+              modal_reset={modal_reset}
+            />
+        )}  
+      </AnimatePresence>      
     </div>
   )
 }

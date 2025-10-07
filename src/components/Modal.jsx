@@ -72,7 +72,7 @@ const Modal = ({modal}) => {
           <fieldset className="flex flex-col space-y-1">
             <label>Cantidad del gasto</label>
             <input
-              type="text"
+              type="number"
               name="expense_quantity"
               placeholder="Introduce la cantidad del gasto"
               className={`border rounded px-2 ${errors?.expense_quantity && 'border-red-500'}`}
